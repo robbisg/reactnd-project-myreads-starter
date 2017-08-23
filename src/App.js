@@ -5,52 +5,96 @@ import SearchBook from "./SearchBook"
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
+
+
+
 class BooksApp extends React.Component {
+
+
+
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-     books: [],
-     showSearchPage: true
+     shelfBooks: [],
+     isChanged: false,
   }
 
 
   componentDidMount() {
 
     BooksAPI.getAll().then((books) => {
-      this.setState({ books: books})
-      console.log(books)
+      this.setState({ shelfBooks: books})
+      console.log("componentDidMount")
     })
 
   }
 
 
+  componentDidUpdate(nextProp, nextState){
+    if (this.state.isChanged) {
+      BooksAPI.getAll().then((books) => {
+        this.setState({ shelfBooks: books, isChanged: false})
+    })
+    }
+
+  }
+
+
+  changeShelf = (book, shelf) => {
+    BooksAPI.update(book, shelf).then((data) => {
+      this.setState({isChanged: true})
+    })
+  }
+
+
+  addBook = (book, shelf) => {
+      BooksAPI.update(book, shelf).then( (data) => {
+        this.setState((state) => ({isChanged: true, shelfBooks: state.shelfBooks.concat([ book ])}))
+        console.log(data)
+      })
+    }
+
+
   render() {
+
+    let shelfDict = {
+        currentlyReading: "Currently Reading",
+         wantToRead: "Want to Read",
+         read: "Read"
+       }
+
+    const shelfKeys = Object.keys(shelfDict)
+
+
     return (
 
 
       <div className="app">
 
-        <Route exact path="/search" render={ () =>
-          <SearchBook />
+        <Route exact path="/search" render={ ({history}) =>
+          <SearchBook onChangeShelf={(book,shelf) => {
+            this.addBook(book, shelf)
+            history.push("/")
+          }} />
         } />
 
-        <Route exact path="/" render={ () =>
+        <Route exact path="/" render={ ({history}) =>
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
               <div>
-                <BookList
-                  books={this.state.books} shelf="currentlyReading" />
-                <BookList
-                  books={this.state.books} shelf="wantToRead" />
-                <BookList
-                  books={this.state.books} shelf="read" />
+
+                {shelfKeys.map((shelf) => (
+                  <div className="bookshelf">
+                    <h2 className="bookshelf-title">{shelfDict[shelf]}</h2>
+                    <BookList books={this.state.shelfBooks.filter((book) => (book.shelf === shelf))}
+                      onChangeShelf={(book,shelf) => {
+                        this.changeShelf(book, shelf)
+                        history.push("/")
+                      }}/>
+                  </div>
+
+                ))}
               </div>
             </div>
             <div className="open-search">

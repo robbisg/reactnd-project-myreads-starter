@@ -1,16 +1,55 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import BookItem from "./BookItem"
+import BookList from "./BookList"
+import * as BooksAPI from './BooksAPI'
 
 class SearchBook extends Component {
 
   state = {
-    query: ""
+    query: "",
+    foundBooks: []
+  }
+
+  updateQuery = (query) => {
+    this.setState({query: query})
+  }
+
+  componentDidUpdate(prevProp, prevState) {
+    console.log("componentDidUpdate")
+    console.log(prevState)
+    console.log(this.state)
+
+    if (prevState.query !== this.state.query) {
+      console.log("different query")
+
+      // empty query
+      if (this.state.query === "" ) {
+        console.log("empty query")
+        this.setState({foundBooks:[]})
+      }
+
+      // non empty
+      if (this.state.query !== "") {
+        console.log("non empty query")
+        BooksAPI.search(this.state.query, 20).then((data) => { // make a search
+          console.log(data)
+          data = (data.error ? ([]) : (data))
+          this.setState({foundBooks: data})
+        })
+      }
+    }
+      else {
+        console.log("same query")
+      }
+
+    
   }
 
   render () {
+
     return(
+
       <div className="search-books">
         <div className="search-books-bar">
           <Link className="close-search" to="/">Close</Link>
@@ -23,12 +62,15 @@ class SearchBook extends Component {
               However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
               you don't find a specific author or title. Every search is limited by search terms.
             */}
-            <input type="text" placeholder="Search by title or author"/>
-
+            <input type="text"
+              placeholder="Search by title or author"
+              value={this.state.query}
+              onChange={(event) => this.updateQuery(event.target.value)} />
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <p>Number of books displayed: {this.state.foundBooks.length}</p>
+          <BookList books={this.state.foundBooks} onChangeShelf={this.props.onChangeShelf}/>
         </div>
       </div>
     )
