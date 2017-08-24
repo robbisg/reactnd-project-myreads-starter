@@ -4,7 +4,6 @@ import BookItem from "./BookItem"
 
 class BookList extends Component {
 
-
   static propTypes = {
     books : PropTypes.array.isRequired,
     onChangeShelf : PropTypes.func.isRequired
@@ -16,7 +15,11 @@ class BookList extends Component {
 
         <div className="bookshelf-books">
           <ol className="books-grid">
-            {this.props.books.map((book) => (<BookItem book={book} onChangeShelf={this.props.onChangeShelf}/>))}
+            {this.props.books.map((book) => (
+              <li key={book.id}>
+                <BookItem book={book} onChangeShelf={this.props.onChangeShelf}/>
+              </li>
+                ))}
           </ol>
         </div>
       )

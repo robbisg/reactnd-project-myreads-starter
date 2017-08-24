@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import * as BooksAPI from "./BooksAPI"
-import createHistory from 'history/createBrowserHistory'
-
+import { Link } from 'react-router-dom'
 
 class BookItem extends Component {
 
@@ -10,6 +8,7 @@ class BookItem extends Component {
   }
 
   render () {
+
 
     const book = this.props.book
     const selected = book.shelf ? (book.shelf) : ("none")
@@ -20,13 +19,14 @@ class BookItem extends Component {
       height: 193,
       backgroundImage: 'url(' + imgUrl + ')',
     };
+    const linkTo = "/book/"+book.id
 
     return (
-      <li key={this.props.book.id}>
+
         <div className="book">
           <div className="book-top">
-            <div className="book-cover" style={divStyle}></div>
-            <div className="book-shelf-changer">
+            <Link to={linkTo}><div className="book-cover" style={divStyle}></div></Link>
+            <div className="book-shelf-changer input-field">
               <select value={selected} onChange={(event) => this.updateShelf(book, event.target.value)}>
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
@@ -39,7 +39,7 @@ class BookItem extends Component {
           <div className="book-title">{book.title}</div>
           {book.authors && (<div className="book-authors">{book.authors.map((author) => (<span>{author} </span>))}</div>)}
         </div>
-      </li>
+
     )
 
   }
