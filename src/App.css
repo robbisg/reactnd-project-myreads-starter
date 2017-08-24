@@ -2,11 +2,11 @@ html, body, .root {
   height: 100%;
 }
 body {
-  font-family: "Muli";
   line-height: 1.5;
 }
 body, .app {
   background: white;
+    font-family: "Muli";
 }
 
 /* main page */
@@ -27,19 +27,21 @@ body, .app {
 }
 
 .bookshelf {
-  padding: 0 10px 20px;
-  margin: 5px;
-  border: 2px solid darkgrey;
+  padding: 10px;
+  margin: 35px 20px 35px 20px;
+  background-color: #fafafa;
+  border: 3px solid darkgray;
 }
 
 @media (min-width: 600px) {
   .bookshelf {
-    padding: 0 20px 40px;
+    padding: 10px;
+    margin: 35px 20px 35px 20px;
   }
 }
 
 .bookshelf-title {
-  border-bottom: 1px solid #dedede;
+  font-size: 30px;
 }
 .bookshelf-books {
   text-align: center;
@@ -77,7 +79,6 @@ body, .app {
 }
 .search-books-input-wrapper {
   flex: 1;
-  background: #e9e;
 }
 .search-books-bar input {
   width: 100%;
