@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import BookItem from "./BookItem"
 
+import {GridList, GridTile} from 'material-ui/GridList'
+
 class BookList extends Component {
 
   static propTypes = {
@@ -14,13 +16,13 @@ class BookList extends Component {
     return (
 
         <div className="bookshelf-books">
-          <ol className="books-grid">
+          <GridList cellHeight={260} cols={6}>
             {this.props.books.map((book) => (
-              <li key={book.id}>
+
                 <BookItem book={book} onChangeShelf={this.props.onChangeShelf}/>
-              </li>
-                ))}
-          </ol>
+
+            ))}
+          </GridList>
         </div>
       )
     }

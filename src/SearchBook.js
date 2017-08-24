@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import BookList from "./BookList"
 import * as BooksAPI from './BooksAPI'
 
+import TextField from 'material-ui/TextField';
+
+
 class SearchBook extends Component {
 
   state = {
@@ -61,14 +64,14 @@ class SearchBook extends Component {
         <div className="search-books-bar">
           <Link className="close-search" to="/">Close</Link>
           <div className="search-books-input-wrapper">
-            <input type="text"
+            <TextField type="text"
               placeholder="Search by title or author"
               value={this.state.query}
-              onChange={(event) => this.updateQuery(event.target.value)} />
+              fullWidth={true}
+              onChange={(event, newValue) => this.updateQuery(newValue)} />
           </div>
         </div>
         <div className="search-books-results">
-          <p>Number of books displayed: {this.state.foundBooks.length}</p>
           <BookList books={this.state.foundBooks} onChangeShelf={this.props.onChangeShelf}/>
         </div>
       </div>

@@ -4,6 +4,11 @@ import BookList from "./BookList"
 import BookPage from "./BookPage"
 import SearchBook from "./SearchBook"
 import * as BooksAPI from './BooksAPI'
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import AppBar from 'material-ui/AppBar';
+
 import './App.css'
 
 
@@ -68,7 +73,15 @@ class BooksApp extends React.Component {
     const shelfKeys = Object.keys(shelfDict)
 
 
+    const cardStyle = {
+      margin: "20px",
+      padding: "15px"
+    }
+
+
     return (
+
+
 
 
       <div className="app">
@@ -82,28 +95,32 @@ class BooksApp extends React.Component {
         } />
 
         <Route exact path="/" render={ ({history}) =>
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>My Reads</h1>
-            </div>
+          <div>
+            <AppBar
+              title="My Reads"
+              iconClassNameRight="muidocs-icon-action-home"
+            />
             <div className="list-books-content">
               <div>
 
                 {shelfKeys.map((shelf) => (
-                  <div className="bookshelf">
-                    <h2 className="bookshelf-title">{shelfDict[shelf]}</h2>
+                  <Card style={cardStyle}>
+                    <CardTitle title={shelfDict[shelf]} />
                     <BookList books={this.state.shelfBooks.filter((book) => (book.shelf === shelf))}
                       onChangeShelf={(book,shelf) => {
                         this.changeShelf(book, shelf)
                         history.push("/")
                       }}/>
-                  </div>
+                  </Card>
 
                 ))}
               </div>
             </div>
             <div className="open-search">
-              <Link to="/search">Add a book</Link>
+              <FloatingActionButton containerElement={<Link to="/search"></Link>}>
+                <ContentAdd />
+              </FloatingActionButton>
+
             </div>
           </div>
         } />
