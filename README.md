@@ -1,4 +1,4 @@
-# MyReads -- Udacity's React Fundamentals ND Project #1
+# MyReads - Udacity's React Fundamentals ND Project #1
 This is my solution for the first project of the Udacity's React Fundamental Nanodegree.
 
 
