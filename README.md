@@ -16,9 +16,6 @@ cd my-reads
 # Install dependecies
 npm install
 
-# Start the backend
-node server.js
-
 # Start the App
 npm start
 ```
